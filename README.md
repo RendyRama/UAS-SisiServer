@@ -1,3 +1,4 @@
-<<<<<<< HEAD
-# UAS_PSS
->>>>>>> fed4e00614f3fc99e7e659b7dd830dc73323a92e
+## Backend Simple LMS
+
+Merupakan proyek backend untuk aplikasi LMS sederhana yang dibuat untuk tujuan studi kasus pembelajaran backend developement menggunakan Django dan Django Ninja.
+
