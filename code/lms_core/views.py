@@ -1,11 +1,16 @@
 from django.shortcuts import render, HttpResponse, redirect, get_object_or_404
 from django.http import JsonResponse
+<<<<<<< HEAD
+from lms_core.models import Course, Comment, CourseContent, CourseMember, UserProfile, Bookmark, CompletionTracking, Certificate
+=======
 from lms_core.models import Course, Comment, CourseContent, CourseMember, UserProfile, Bookmark
+>>>>>>> a6d12e6590c6164bff9e0c814824e42b97c0d8d4
 from django.core import serializers
 from django.contrib.auth.models import User
 from django.utils.timezone import now
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
 
 def index(request):
     return HttpResponse("<h1>Hello World</h1>")
@@ -47,11 +52,7 @@ def register(request):
 
         user = User.objects.create_user(username=username, email=email, password=password)
         user.save()
-        # Login pengguna setelah registrasi
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return JsonResponse({"message": "User registered and logged in successfully"})
+        return redirect('login')  # Ganti 'login' dengan nama URL untuk halaman login Anda
 
     return render(request, "register.html")
 
@@ -218,4 +219,102 @@ def available_courses_view(request):
     user = request.user
     enrolled_course_ids = CourseMember.objects.filter(user_id=user, roles="std").values_list("course_id", flat=True)
     available_courses = Course.objects.exclude(id__in=enrolled_course_ids)
+<<<<<<< HEAD
     return render(request, "available_courses.html", {"available_courses": available_courses})
+
+@login_required
+def add_completion(request):
+    if request.method == "POST":
+        content_id = request.POST.get("content_id")
+        try:
+            content = CourseContent.objects.get(id=content_id)
+            completion, created = CompletionTracking.objects.get_or_create(user=request.user, content=content)
+            if created:
+                messages.success(request, "Content marked as completed successfully.")
+            else:
+                messages.info(request, "Content is already marked as completed.")
+        except CourseContent.DoesNotExist:
+            messages.error(request, "Content not found.")
+    return redirect(request.META.get('HTTP_REFERER', 'user_dashboard'))
+
+from collections import defaultdict
+
+@login_required
+def show_completion(request):
+    completions = CompletionTracking.objects.filter(user=request.user).select_related("content", "content__course_id")
+
+    # Mengelompokkan konten yang selesai berdasarkan kursus
+    courses_with_completion = defaultdict(list)
+    for completion in completions:
+        course = completion.content.course_id
+        courses_with_completion[course].append(completion)
+
+    # Cek kursus yang selesai seluruh kontennya
+    completed_courses = []
+    for course, completions in courses_with_completion.items():
+        total_contents = CourseContent.objects.filter(course_id=course).count()
+        if len(completions) == total_contents:  # Semua konten selesai
+            certificate = Certificate.objects.filter(user=request.user, course=course).first()
+            completed_courses.append({
+                "course": course,
+                "certificate": certificate,
+            })
+
+    return render(request, "show_completion.html", {
+        "courses_with_completion": dict(courses_with_completion),
+        "completed_courses": completed_courses,
+    })
+
+
+
+@login_required
+def delete_completion(request, completion_id):
+    try:
+        # Menghapus completion berdasarkan ID dan user
+        completion = CompletionTracking.objects.get(id=completion_id, user=request.user)
+        completion.delete()
+    except CompletionTracking.DoesNotExist:
+        pass  # Abaikan jika data tidak ditemukan
+
+    # Redirect kembali ke halaman sebelumnya (HTTP_REFERER)
+    referer = request.META.get('HTTP_REFERER', 'show_completion')
+    return redirect(referer)
+
+@login_required
+def view_certificate(request, certificate_id):
+    certificate = get_object_or_404(Certificate, id=certificate_id, user=request.user)
+    return render(request, "certificate.html", {"certificate": certificate})
+    
+@login_required
+def generate_certificate(request, course_id):
+    course = get_object_or_404(Course, id=course_id)
+    # Pastikan user telah menyelesaikan semua konten dalam kursus
+    total_contents = CourseContent.objects.filter(course_id=course).count()
+    completed_contents = CompletionTracking.objects.filter(user=request.user, content__course_id=course).count()
+
+    if total_contents == completed_contents:
+        # Buat sertifikat jika belum ada
+        Certificate.objects.get_or_create(user=request.user, course=course)
+        return redirect("show_completion")
+    else:
+        return JsonResponse({"error": "Course not fully completed"}, status=400)
+    
+def delete_certificate(request, certificate_id):
+    try:
+        # Mencari dan menghapus certificate berdasarkan ID dan user
+        certificate = Certificate.objects.get(id=certificate_id, user=request.user)
+        certificate.delete()
+    except Certificate.DoesNotExist:
+        pass  # Abaikan jika certificate tidak ditemukan
+
+    # Redirect kembali ke halaman sebelumnya (HTTP_REFERER)
+    referer = request.META.get('HTTP_REFERER', 'show_completion')
+    return redirect(referer)
+
+@login_required
+def logout_view(request):
+    logout(request)
+    return redirect('login') 
+=======
+    return render(request, "available_courses.html", {"available_courses": available_courses})
+>>>>>>> a6d12e6590c6164bff9e0c814824e42b97c0d8d4

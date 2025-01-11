@@ -90,3 +90,27 @@ class Bookmark(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.content.name}"
+<<<<<<< HEAD
+    
+class CompletionTracking(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="completions")
+    content = models.ForeignKey(CourseContent, on_delete=models.CASCADE, related_name="completed_by")
+    completed_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ("user", "content")  # Ensures no duplicate completion
+        verbose_name = "Completion Tracking"
+        verbose_name_plural = "Completion Tracking"
+
+    def __str__(self):
+        return f"{self.user.username} completed {self.content.name}"
+    
+class Certificate(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Certificate for {self.user.username} - {self.course.name}"
+=======
+>>>>>>> a6d12e6590c6164bff9e0c814824e42b97c0d8d4
