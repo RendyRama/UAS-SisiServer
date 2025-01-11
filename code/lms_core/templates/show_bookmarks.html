@@ -1,127 +1,145 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Your Bookmarks</title>
     <style>
-        /* Global Styles */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f9;
-            color: #333;
-        }
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: #00509e;
+        margin: 0;
+        padding: 0;
+        color: #fff;
+      }
 
-        header {
-            background-color: #4CAF50;
-            color: white;
-            padding: 1.5rem;
-            text-align: center;
-        }
+      header {
+        background-color: #ffc107;
+        color: #003366;
+        padding: 1.5rem;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
 
-        header h1 {
-            margin: 0;
-            font-size: 2rem;
-        }
+      header h1 {
+        margin: 0;
+        font-size: 2rem;
+      }
 
-        main {
-            max-width: 800px;
-            margin: 2rem auto;
-            padding: 1.5rem;
-            background: white;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-        }
+      main {
+        max-width: 900px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background: white;
+        color: #333;
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        border-radius: 12px;
+      }
 
-        ul {
-            list-style: none;
-            padding: 0;
-        }
+      ul {
+        list-style: none;
+        padding: 0;
+      }
 
-        ul li {
-            background-color: #f9f9f9;
-            margin: 1rem 0;
-            padding: 1rem;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
+      ul li {
+        background-color: #f9f9f9;
+        margin: 1rem 0;
+        padding: 1.5rem;
+        border: 1px solid #ddd;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
 
-        ul li h3 {
-            margin: 0 0 0.5rem;
-            font-size: 1.25rem;
-            color: #4CAF50;
-        }
+      ul li:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      }
 
-        ul li p {
-            margin: 0 0 1rem;
-            color: #666;
-        }
+      ul li h3 {
+        margin: 0 0 0.5rem;
+        font-size: 1.5rem;
+        color: #00509e;
+      }
 
-        .btn {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            text-decoration: none;
-            font-size: 1rem;
-            cursor: pointer;
-            font-weight: bold;
-        }
+      ul li p {
+        margin: 0 0 1rem;
+        color: #666;
+      }
 
-        .btn:hover {
-            background-color: #45a049;
-        }
+      .btn {
+        display: inline-block;
+        padding: 0.7rem 1.5rem;
+        background-color: #00509e;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        text-decoration: none;
+        font-size: 1rem;
+        cursor: pointer;
+        font-weight: bold;
+        text-align: center;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+      }
 
-        .btn-delete {
-            background-color: #ff4d4d;
-        }
+      .btn:hover {
+        background-color: #003366;
+        transform: translateY(-3px);
+      }
 
-        .btn-delete:hover {
-            background-color: #e60000;
-        }
+      .btn-delete {
+        background-color: #ff4d4d;
+      }
 
-        .btn-back {
-            margin-top: 1rem;
-            background-color: #007BFF;
-        }
+      .btn-delete:hover {
+        background-color: #e60000;
+      }
 
-        .btn-back:hover {
-            background-color: #0056b3;
-        }
+      .btn-back {
+        margin-top: 1rem;
+        background-color: #ffc107;
+        color: #003366;
+      }
 
-        p {
-            text-align: center;
-            color: #777;
-        }
+      .btn-back:hover {
+        background-color: #e0a800;
+      }
+
+      p {
+        text-align: center;
+        color: #777;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <header>
-        <h1>Your Bookmarks</h1>
+      <h1>Your Bookmarks</h1>
     </header>
     <main>
-        {% if bookmarks %}
-        <ul>
-            {% for bookmark in bookmarks %}
-            <li>
-                <h3>{{ bookmark.content.name }}</h3>
-                <p>Course: <strong>{{ bookmark.content.course_id.name }}</strong></p>
-                <form method="POST" action="{% url 'delete_bookmark' bookmark.id %}">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-delete">Remove Bookmark</button>
-                </form>
-            </li>
-            {% endfor %}
-        </ul>
-        {% else %}
-        <p>You have no bookmarks yet.</p>
-        {% endif %}
-        <a href="{% url 'user_dashboard' %}" class="btn btn-back">Back to Dashboard</a>
+      {% if bookmarks %}
+      <ul>
+        {% for bookmark in bookmarks %}
+        <li>
+          <h3>{{ bookmark.content.name }}</h3>
+          <p>Course: <strong>{{ bookmark.content.course_id.name }}</strong></p>
+          <form method="POST" action="{% url 'delete_bookmark' bookmark.id %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-delete">
+              Remove Bookmark
+            </button>
+          </form>
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p>You have no bookmarks yet.</p>
+      {% endif %}
+      <a href="{% url 'user_dashboard' %}" class="btn btn-back"
+        >Back to Dashboard</a
+      >
+      <a href="{% url 'available_courses' %}" class="btn btn-back"
+        >Back to Available Courses</a
+      >
     </main>
-</body>
+  </body>
 </html>

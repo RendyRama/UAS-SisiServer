@@ -1,84 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Profile</title>
     <style>
-        /* Global Styles */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f9;
-            color: #333;
-        }
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: #00509e;
+        margin: 0;
+        padding: 0;
+        color: #fff;
+      }
 
-        header {
-            background-color: #4CAF50;
-            color: white;
-            padding: 1rem;
-            text-align: center;
-        }
+      header {
+        background-color: #ffc107;
+        color: #003366;
+        padding: 1rem;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
 
-        header h1 {
-            margin: 0;
-            font-size: 2rem;
-        }
+      header h1 {
+        margin: 0;
+        font-size: 2rem;
+      }
 
-        main {
-            margin: 2rem auto;
-            padding: 1rem;
-            width: 90%;
-            max-width: 600px;
-            background: white;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-        }
+      main {
+        margin: 2rem auto;
+        padding: 2rem;
+        width: 90%;
+        max-width: 600px;
+        background: white;
+        color: #333;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        border-radius: 12px;
+      }
 
-        section {
-            margin-bottom: 1.5rem;
-        }
+      section {
+        margin-bottom: 1.5rem;
+      }
 
-        section p {
-            font-size: 1.1rem;
-            margin: 0.5rem 0;
-        }
+      section p {
+        font-size: 1.1rem;
+        margin: 0.5rem 0;
+      }
 
-        section p strong {
-            color: #4CAF50;
-        }
+      section p strong {
+        color: #00509e;
+      }
 
-        .btn-edit {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            background-color: #007BFF;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            text-align: center;
-            margin-top: 1rem;
-        }
+      .btn-edit {
+        display: inline-block;
+        padding: 0.7rem 1.5rem;
+        background-color: #00509e;
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: bold;
+        text-align: center;
+        margin-top: 1rem;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+      }
 
-        .btn-edit:hover {
-            background-color: #0056b3;
-        }
+      .btn-edit:hover {
+        background-color: #003366;
+        transform: translateY(-3px);
+      }
+
+      .btn-back {
+        display: inline-block;
+        padding: 0.7rem 1.5rem;
+        background-color: #ffc107;
+        color: #003366;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: bold;
+        text-align: center;
+        margin-top: 1rem;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+      }
+
+      .btn-back:hover {
+        background-color: #e0a800;
+        transform: translateY(-3px);
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <header>
-        <h1>Profile of {{ profile.first_name }} {{ profile.last_name }}</h1>
+      <h1>Profile of {{ profile.first_name }} {{ profile.last_name }}</h1>
     </header>
     <main>
-        <section>
-            <p><strong>First Name:</strong> {{ profile.first_name }}</p>
-            <p><strong>Last Name:</strong> {{ profile.last_name }}</p>
-            <p><strong>Email:</strong> {{ profile.email }}</p>
-        </section>
-        <section>
-            <a href="{% url 'edit_profile' %}" class="btn-edit">Edit Profile</a>
-        </section>
+      <section>
+        <p><strong>First Name:</strong> {{ profile.first_name }}</p>
+        <p><strong>Last Name:</strong> {{ profile.last_name }}</p>
+        <p><strong>Email:</strong> {{ profile.email }}</p>
+      </section>
+      <section>
+        <a href="{% url 'edit_profile' %}" class="btn-edit">Edit Profile</a>
+      </section>
+      <section>
+        <a href="{% url 'teacher_dashboard' %}" class="btn-back"
+          >Back to Dashboard</a
+        >
+      </section>
     </main>
-</body>
+  </body>
 </html>
